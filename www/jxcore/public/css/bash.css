@@ -16,16 +16,26 @@
     color: #BFBFBF;
 }
 
-.bash > .bash-input {
-    border: none !important;
-    outline: 0 !important;
-    background-color: rgba(0, 0, 0, 0) !important;
-    color: #BFBFBF;
+.bash > .bash-commands > .bash-command:nth-last-child(2) {
+    float: left;
+    display: block;
+}
+
+.bash > .bash-commands > .bash-input {
+    display: block;
+    overflow: auto;
+}
+
+.bash > .bash-commands > .bash-input > input {
+    padding: 0;
+    margin: 0;
     width: 100%;
-    padding-left: 19px;
+    border: none;
+    outline: 0;
+    background-color: transparent;
+    color: #BFBFBF;
+    padding-left: 9px;
     font-size: inherit;
     font-family: inherit;
-    position: relative;
-    top: -21px;
     box-sizing: border-box;
 }

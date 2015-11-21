@@ -46,24 +46,26 @@ function Bash(container) {
 
     // focus input on click anywhere
     container.addEventListener('click', function () {
-        commandInput.focus();
+        cmdInput.focus();
     });
 
     // add commmands container
-    var commandsContainer = self.commandsContainer = document.createElement('div');
-    commandsContainer.className = 'bash-commands';
-    container.appendChild(commandsContainer);
+    var cmdsContainer = self.cmdsContainer = document.createElement('div');
+    cmdsContainer.className = 'bash-commands';
+    container.appendChild(cmdsContainer);
 
     // add command input
-    var commandInput = self.commandInput = document.createElement('input');
-    commandInput.type = 'text';
-    commandInput.className = 'bash-input';
-    commandInput.autofocus = true;
-    commandInput.spellcheck = false;
-    container.appendChild(commandInput);
+    var cmdInputContainer = self.cmdInputContainer = document.createElement('div');
+    cmdInputContainer.className = 'bash-input';
+    cmdsContainer.appendChild(cmdInputContainer);
+    var cmdInput = self.cmdInput = document.createElement('input');
+    cmdInput.type = 'text';
+    cmdInput.autofocus = true;
+    cmdInput.spellcheck = false;
+    cmdInputContainer.appendChild(cmdInput);
 
     // listen for command
-    commandInput.addEventListener('keypress', function (e) {
+    cmdInput.addEventListener('keypress', function (e) {
         if (e.which === 13) {
             switch (this.value) {
                 case '.clear':
@@ -71,7 +73,7 @@ function Bash(container) {
                 break;
                 default:
                 self.trigger('stdin', this.value);
-                commandsContainer.removeChild(commandsContainer.childNodes[commandsContainer.childNodes.length - 1]);
+                cmdsContainer.removeChild(cmdsContainer.childNodes[cmdsContainer.childNodes.length - 2]);
                 self.write('> ' + this.value);
                 break;
             }
@@ -86,22 +88,22 @@ Bash.prototype.__proto__ = EventTarget.prototype;
 // methods
 Bash.prototype.write = function (command) {
     var self = this,
-        commandInput = self.commandInput,
-        commandsContainer = self.commandsContainer;
+        cmdInputContainer = self.cmdInputContainer,
+        cmdsContainer = self.cmdsContainer;
 
     var commandContainer = document.createElement('div');
     commandContainer.className = 'bash-command';
     commandContainer.textContent = command;
-    commandsContainer.appendChild(commandContainer);
+    cmdsContainer.insertBefore(commandContainer, cmdInputContainer);
     window.scrollTo(0, document.body.scrollHeight);
 };
 
 Bash.prototype.clear = function () {
     var self = this,
-        commandsContainer = self.commandsContainer,
-        commandContainers = commandsContainer.childNodes;
+        cmdsContainer = self.cmdsContainer,
+        commandContainers = cmdsContainer.childNodes;
 
     while (commandContainers.length > 1) {
-        commandsContainer.removeChild(commandContainers[0]);
+        cmdsContainer.removeChild(commandContainers[0]);
     }
 };
