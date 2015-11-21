@@ -103,7 +103,7 @@ Bash.prototype.clear = function () {
         cmdsContainer = self.cmdsContainer,
         commandContainers = cmdsContainer.childNodes;
 
-    while (commandContainers.length > 1) {
+    while (commandContainers.length > 2) {
         cmdsContainer.removeChild(commandContainers[0]);
     }
 };
