@@ -67,19 +67,22 @@ function Bash(container) {
     // listen for command
     cmdInput.addEventListener('keypress', function (e) {
         if (e.which === 13) {
-            switch (this.value) {
-                case '.clear':
-                self.clear();
-                break;
-                default:
+            var cmd = self.cmds[this.value];
+            if (cmd) {
+                cmd.call(self);
+            } else {
                 self.trigger('stdin', this.value);
                 cmdsContainer.removeChild(cmdsContainer.childNodes[cmdsContainer.childNodes.length - 2]);
                 self.write('> ' + this.value);
-                break;
             }
             this.value = null;
         }
     });
+
+    // define commands
+    self.cmds = {
+        cls: self.clear
+    };
 }
 
 // inherit from EventTarget
