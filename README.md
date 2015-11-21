@@ -2,6 +2,9 @@
 
 JXcore app that allows to run nodejs code remotely from browser to phone.
 
+![Android](https://raw.githubusercontent.com/karaxuna/jxcore-repl/master/screens/android.png "Android")
+![Browser](https://raw.githubusercontent.com/karaxuna/jxcore-repl/master/screens/browser.png "Browser")
+
 ### Build
 Supposing you have already installed [JXcore](http://jxcore.com/downloads/), cordova and gulp, now install local npm modules:
 
