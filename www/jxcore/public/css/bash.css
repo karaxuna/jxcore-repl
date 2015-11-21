@@ -1,0 +1,31 @@
+.bash {
+    background-color: #272822;
+    min-height: 100%;
+    width: 100%;
+    font-family: 'consolas';
+    font-size: 17px;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.bash > .bash-commands {
+    overflow: hidden;
+}
+
+.bash > .bash-commands > .bash-command {
+    color: #BFBFBF;
+}
+
+.bash > .bash-input {
+    border: none !important;
+    outline: 0 !important;
+    background-color: rgba(0, 0, 0, 0) !important;
+    color: #BFBFBF;
+    width: 100%;
+    padding-left: 19px;
+    font-size: inherit;
+    font-family: inherit;
+    position: relative;
+    top: -21px;
+    box-sizing: border-box;
+}
