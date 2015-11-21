@@ -72,8 +72,6 @@ function Bash(container) {
                 cmd.call(self);
             } else {
                 self.trigger('stdin', this.value);
-                cmdsContainer.removeChild(cmdsContainer.childNodes[cmdsContainer.childNodes.length - 2]);
-                self.write('> ' + this.value);
             }
             this.value = null;
         }
@@ -99,6 +97,12 @@ Bash.prototype.write = function (command) {
     commandContainer.textContent = command;
     cmdsContainer.insertBefore(commandContainer, cmdInputContainer);
     window.scrollTo(0, document.body.scrollHeight);
+};
+
+Bash.prototype.prepare = function () {
+    var self = this,
+        cmdsContainer = self.cmdsContainer;
+    cmdsContainer.removeChild(cmdsContainer.childNodes[cmdsContainer.childNodes.length - 2]);
 };
 
 Bash.prototype.clear = function () {

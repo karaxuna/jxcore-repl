@@ -1,14 +1,14 @@
 var Stream = require('stream');
 
 // constructor
-function SocketStream(socket, options) {
+function SocketStream(io, options) {
     var self = this;
     Stream.call(this, options);
-    self.socket = socket;
+    self.io = io;
 
     // listen socket info
-    socket.on('stdin', function (data) {
-        self.emit('data', data + '\n');
+    io.sockets.sockets.forEach(function (socket) {
+        self.addSocket(socket);
     });
 };
 
@@ -16,6 +16,14 @@ function SocketStream(socket, options) {
 SocketStream.prototype.__proto__ = Stream.prototype;
 
 // methods
+SocketStream.prototype.addSocket = function (socket) {
+    var self = this;
+    socket.on('stdin', function (data) {
+        self.io.emit('stdin', data);
+        self.emit('data', data + '\n');
+    });
+};
+
 SocketStream.prototype.resume = function () {
     var self = this;
 };
@@ -24,9 +32,9 @@ SocketStream.prototype.pause = function () {
     var self = this;
 };
 
-SocketStream.prototype.write = function (data) {
+SocketStream.prototype.write = function (cmd) {
     var self = this;
-    self.socket.emit('stdout', data);
+    self.io.emit('stdout', cmd);
 };
 
 // export

@@ -17,42 +17,29 @@ http.listen(process.env.PORT || port);
 // serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
+// serve empty jxcore and cordova
+['jxcore', 'cordova'].forEach(function (name) {
+    app.get('/' + name + '.js', function (req, res) {
+        res.send('window.' + name + '="none";');
+    });
+});
+
+// start repl
+var stream = new SocketStream(io);
+var server = repl.start({
+    prompt: '>',
+    input: stream,
+    output: stream,
+    useGlobal: true
+});
+
 // on connection
 io.on('connection', function (socket) {
-    var stream = new SocketStream(socket);
-    var server = socket.repl = repl.start({
-        prompt: '>',
-        input: stream,
-        output: stream,
-        useGlobal: true
-    });
-
-    if (isMobile) {
-        Mobile('addConnection').call(socket.handshake.address);
-        socket.on('disconnect', function () {
-            Mobile('removeConnection').call(socket.handshake.address);
-            server.close();
-        });
-    }
+    stream.addSocket(socket);
 });
 
 if (isMobile) {
-    var host = getLocalIP();
-    Mobile('setHost').call(host);
-    Mobile('destroyConnection').registerSync(destroyConnection);
-}
-
-function destroyConnection(ip) {
-    var sockets = io.sockets.sockets,
-        i, socket;
-
-    for (i = 0; i < sockets.length; i++) {
-        socket = sockets[i];
-        if (socket.handshake.address === ip) {
-            socket.disconnect();
-            break;
-        }
-    }
+    Mobile('getLocalIP').registerSync(getLocalIP);
 }
 
 function getLocalIP() {
