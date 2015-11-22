@@ -9,6 +9,7 @@ var gulp = require('gulp'),
     useref = require('gulp-useref'),
     download = require('gulp-download'),
     clean = require('gulp-clean'),
+    cheerio = require('gulp-cheerio'),
     fs = require('fs');
 
 gulp.task('cordova-create', function (callback) {
@@ -70,7 +71,20 @@ gulp.task('install-server-packages', function () {
     }));
 });
 
-gulp.task('move-server-to-www', ['install-server-packages', 'clean-www'], function () {
+gulp.task('change-config-xml', ['cordova-create'], function (done) {
+    var configPath = 'cordova/config.xml';
+    fs.readFile(configPath, 'utf8', function (err, content) {
+        if (err) {
+            done(err);
+        } else {
+            content = content.replace('index.html', 'jxcore/public/index.html');
+            fs.writeFile(configPath, content, done);
+        }
+    });
+});
+
+
+gulp.task('move-server-to-www', ['install-server-packages', 'clean-www', 'change-config-xml'], function () {
     return gulp
         .src('www/**/*', {
             base: 'www'

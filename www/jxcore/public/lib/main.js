@@ -5,14 +5,15 @@
         init(location.protocol + '//' + location.host + '/');
     } else {
         jxcore.isReady(function () {
-            Mobile('alert').register(alert);
+            jxcore('alert').register(alert);
             jxcore('app.js').loadMainFile(function(result, err) {
                 if (err) {
                     alert(err);
                 } else {
-                    Mobile('getLocalIP').call(function (host) {
+                    var host = jxcore('getLocalIP').call(function (host) {
                         init(host);
                     });
+                    
                 }
             });
         });

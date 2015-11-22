@@ -39,7 +39,12 @@ io.on('connection', function (socket) {
 });
 
 if (isMobile) {
-    Mobile('getLocalIP').registerSync(getLocalIP);
+    try {
+        Mobile('getLocalIP').registerSync(getLocalIP);
+    }
+    catch(ex) {
+        Mobile('alert').call(ex.message ? ex.message : ex);
+    }
 }
 
 function getLocalIP() {
