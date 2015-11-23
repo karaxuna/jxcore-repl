@@ -9,7 +9,16 @@
     color: #BFBFBF;
 }
 
+.bash > *:nth-last-child(2) {
+    float: left;
+}
+
 .bash > .bash-input {
+    overflow: hidden;
+}
+
+.bash > .bash-input > input {
+    width: 100%;
     padding: 0;
     margin: 0;
     border: none;

@@ -50,12 +50,14 @@ function Bash(container) {
     });
 
     // add command input
+    var cmdInputContainer = self.cmdInputContainer = document.createElement('div');
+    cmdInputContainer.className = 'bash-input';
+    container.appendChild(cmdInputContainer);
     var cmdInput = self.cmdInput = document.createElement('input');
     cmdInput.type = 'text';
-    cmdInput.className = 'bash-input';
     cmdInput.autofocus = true;
     cmdInput.spellcheck = false;
-    container.appendChild(cmdInput);
+    cmdInputContainer.appendChild(cmdInput);
 
     // listen for command
     cmdInput.addEventListener('keypress', function (e) {
@@ -83,33 +85,27 @@ Bash.prototype.__proto__ = EventTarget.prototype;
 Bash.prototype.write = function (command) {
     var self = this,
         container = self.container,
-        cmdInput = self.cmdInput,
-        NEW_LINE = '\n',
-        cmdText;
+        cmdInputContainer = self.cmdInputContainer;
 
-    if (command.indexOf(NEW_LINE) !== -1) {
-        var i = 0, j;
-        while (true) {
-            j = command.indexOf(NEW_LINE, i);
-            if (j === -1) {
-                break;
-            }
-
-            cmdText = document.createTextNode(command.substring(i, j));
-            container.insertBefore(cmdText, cmdInput);
-            container.insertBefore(document.createElement('br'), cmdInput);
-            i = j + 1;
-        }
-
-        cmdText = document.createTextNode(command.substring(i, command.length - 1));
-        container.insertBefore(cmdText, cmdInput);
-    } else {
-        cmdText = document.createTextNode(command);
-        container.insertBefore(cmdText, cmdInput);
-    }
-
+    var cmdText = createSpan(command);
+    container.insertBefore(cmdText, cmdInputContainer);
     window.scrollTo(0, document.body.scrollHeight);
 };
+
+function createSpan(text) {
+    var span = document.createElement('span');
+    text = replaceAll(text, ' ', '&nbsp;');
+    text = replaceAll(text, '\n', '<br/>');
+    span.innerHTML = text;
+    return span;
+}
+
+function replaceAll(text, a, b) {
+    while (text.indexOf(a) !== -1) {
+        text = text.replace(a, b);
+    }
+    return text;
+}
 
 Bash.prototype.clear = function () {
     //var self = this,
