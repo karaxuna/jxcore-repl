@@ -44,18 +44,13 @@ function Bash(container) {
     // add class
     container.className = 'bash';
 
-    // focus input on click anywhere
-    container.addEventListener('click', function () {
-        cmdInput.focus();
-    });
-
     // add command input
     var cmdInputContainer = self.cmdInputContainer = document.createElement('div');
     cmdInputContainer.className = 'bash-input';
     container.appendChild(cmdInputContainer);
     var cmdInput = self.cmdInput = document.createElement('input');
     cmdInput.type = 'text';
-    cmdInput.autofocus = true;
+    cmdInput.placeholder = 'Type here...';
     cmdInput.spellcheck = false;
     cmdInputContainer.appendChild(cmdInput);
 
