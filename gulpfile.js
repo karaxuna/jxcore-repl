@@ -101,3 +101,12 @@ gulp.task('run', ['build'], function () {
         cwd: 'cordova'
     }));
 });
+
+// release config (does not work with gulp, just to remember)
+gulp.task('generate-keystore', function () {
+    return gulp.src('').pipe(shell('keytool -genkey -v -keystore build.keystore -alias jxcore-repl -keyalg RSA -keysize 2048 -validity 10000'));
+});
+
+gulp.task('build-release', ['build'], function () {
+    return gulp.src('').pipe(shell('"cordova/platforms/android/cordova/build" --release --buildConfig build.json'));
+});
