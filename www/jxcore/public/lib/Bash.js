@@ -62,20 +62,10 @@ function Bash(container) {
     // listen for command
     cmdInput.addEventListener('keypress', function (e) {
         if (e.which === 13) {
-            var cmd = self.cmds[this.value];
-            if (cmd) {
-                cmd.call(self);
-            } else {
-                self.trigger('stdin', this.value);
-            }
+            self.trigger('stdin', this.value);
             this.value = null;
         }
     });
-
-    // define commands
-    self.cmds = {
-        cls: self.clear
-    };
 }
 
 // inherit from EventTarget
@@ -94,10 +84,18 @@ Bash.prototype.write = function (command) {
 
 function createSpan(text) {
     var span = document.createElement('span');
+    text = escapeHtml(text);
     text = replaceAll(text, ' ', '&nbsp;');
     text = replaceAll(text, '\n', '<br/>');
     span.innerHTML = text;
     return span;
+}
+
+function escapeHtml(html) {
+    var text = document.createTextNode(html);
+    var div = document.createElement('div');
+    div.appendChild(text);
+    return div.innerHTML;
 }
 
 function replaceAll(text, a, b) {
@@ -106,13 +104,3 @@ function replaceAll(text, a, b) {
     }
     return text;
 }
-
-Bash.prototype.clear = function () {
-    //var self = this,
-    //    cmdsContainer = self.cmdsContainer,
-    //    commandContainers = cmdsContainer.childNodes;
-//
-    //while (commandContainers.length > 2) {
-    //    cmdsContainer.removeChild(commandContainers[0]);
-    //}
-};
