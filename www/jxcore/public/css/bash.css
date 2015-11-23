@@ -7,6 +7,7 @@
     padding: 5px;
     box-sizing: border-box;
     color: #BFBFBF;
+    word-wrap: break-word;
 }
 
 .bash > *:nth-last-child(2) {

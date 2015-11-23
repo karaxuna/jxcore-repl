@@ -77,7 +77,7 @@ gulp.task('change-config-xml', ['cordova-create'], function (done) {
         if (err) {
             done(err);
         } else {
-            content = content.replace('index.html', 'jxcore/public/index.html');
+            content = content.replace('src="index.html"', 'src="jxcore/public/index.html"');
             fs.writeFile(configPath, content, done);
         }
     });
