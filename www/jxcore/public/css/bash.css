@@ -6,35 +6,16 @@
     font-size: 17px;
     padding: 5px;
     box-sizing: border-box;
-}
-
-.bash > .bash-commands {
-    overflow: hidden;
-}
-
-.bash > .bash-commands > .bash-command {
     color: #BFBFBF;
 }
 
-.bash > .bash-commands > .bash-command:nth-last-child(2) {
-    float: left;
-    display: block;
-}
-
-.bash > .bash-commands > .bash-input {
-    display: block;
-    overflow: auto;
-}
-
-.bash > .bash-commands > .bash-input > input {
+.bash > .bash-input {
     padding: 0;
     margin: 0;
-    width: 100%;
     border: none;
     outline: 0;
     background-color: transparent;
     color: #BFBFBF;
-    padding-left: 9px;
     font-size: inherit;
     font-family: inherit;
     box-sizing: border-box;

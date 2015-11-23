@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // start repl
 var stream = new SocketStream(io);
 var server = repl.start({
-    prompt: '>',
+    prompt: '> ',
     input: stream,
     output: stream,
     useGlobal: true

@@ -49,20 +49,13 @@ function Bash(container) {
         cmdInput.focus();
     });
 
-    // add commmands container
-    var cmdsContainer = self.cmdsContainer = document.createElement('div');
-    cmdsContainer.className = 'bash-commands';
-    container.appendChild(cmdsContainer);
-
     // add command input
-    var cmdInputContainer = self.cmdInputContainer = document.createElement('div');
-    cmdInputContainer.className = 'bash-input';
-    cmdsContainer.appendChild(cmdInputContainer);
     var cmdInput = self.cmdInput = document.createElement('input');
     cmdInput.type = 'text';
+    cmdInput.className = 'bash-input';
     cmdInput.autofocus = true;
     cmdInput.spellcheck = false;
-    cmdInputContainer.appendChild(cmdInput);
+    container.appendChild(cmdInput);
 
     // listen for command
     cmdInput.addEventListener('keypress', function (e) {
@@ -89,28 +82,41 @@ Bash.prototype.__proto__ = EventTarget.prototype;
 // methods
 Bash.prototype.write = function (command) {
     var self = this,
-        cmdInputContainer = self.cmdInputContainer,
-        cmdsContainer = self.cmdsContainer;
+        container = self.container,
+        cmdInput = self.cmdInput,
+        NEW_LINE = '\n',
+        cmdText;
 
-    var commandContainer = document.createElement('div');
-    commandContainer.className = 'bash-command';
-    commandContainer.textContent = command;
-    cmdsContainer.insertBefore(commandContainer, cmdInputContainer);
+    if (command.indexOf(NEW_LINE) !== -1) {
+        var i = 0, j;
+        while (true) {
+            j = command.indexOf(NEW_LINE, i);
+            if (j === -1) {
+                break;
+            }
+
+            cmdText = document.createTextNode(command.substring(i, j));
+            container.insertBefore(cmdText, cmdInput);
+            container.insertBefore(document.createElement('br'), cmdInput);
+            i = j + 1;
+        }
+
+        cmdText = document.createTextNode(command.substring(i, command.length - 1));
+        container.insertBefore(cmdText, cmdInput);
+    } else {
+        cmdText = document.createTextNode(command);
+        container.insertBefore(cmdText, cmdInput);
+    }
+
     window.scrollTo(0, document.body.scrollHeight);
 };
 
-Bash.prototype.prepare = function () {
-    var self = this,
-        cmdsContainer = self.cmdsContainer;
-    cmdsContainer.removeChild(cmdsContainer.childNodes[cmdsContainer.childNodes.length - 2]);
-};
-
 Bash.prototype.clear = function () {
-    var self = this,
-        cmdsContainer = self.cmdsContainer,
-        commandContainers = cmdsContainer.childNodes;
-
-    while (commandContainers.length > 2) {
-        cmdsContainer.removeChild(commandContainers[0]);
-    }
+    //var self = this,
+    //    cmdsContainer = self.cmdsContainer,
+    //    commandContainers = cmdsContainer.childNodes;
+//
+    //while (commandContainers.length > 2) {
+    //    cmdsContainer.removeChild(commandContainers[0]);
+    //}
 };

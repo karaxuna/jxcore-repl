@@ -48,16 +48,15 @@ bash.on('stdin', function (command) {
 
 function start(host) {
     socket = io.connect(host);
-    bash.write('> host: ' + host);
-    bash.write('>');
+    bash.write('> host: ' + host + '\n');
+    bash.write('> ');
 
     socket.on('stdout', function (text) {
         bash.write(text);
     });
 
     socket.on('stdin', function (command) {
-        bash.prepare();
-        bash.write('> ' + command);
+        bash.write(command + '\n');
     });
 
     socket.on('disconnect', function () {
