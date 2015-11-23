@@ -1,6 +1,6 @@
-## Nodejs repl server running on phone
+## Nodejs repl server
 
-JXcore app that allows to run nodejs code remotely from browser to phone.
+Play with nodejs code on mobile. You can also connect to phone's repl server from browser, navigating to `host` displayed on app.
 
 ![Android](https://raw.githubusercontent.com/karaxuna/jxcore-repl/master/screens/android.png "Android")
 ![Browser](https://raw.githubusercontent.com/karaxuna/jxcore-repl/master/screens/browser.png "Browser")

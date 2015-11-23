@@ -1,3 +1,4 @@
 node_modules/
 cordova/
 www/jxcore/node_modules
+.db
