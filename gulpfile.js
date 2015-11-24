@@ -10,6 +10,7 @@ var gulp = require('gulp'),
     download = require('gulp-download'),
     clean = require('gulp-clean'),
     cheerio = require('gulp-cheerio'),
+    del = require('del'),
     fs = require('fs');
 
 gulp.task('cordova-create', function (callback) {
@@ -49,7 +50,17 @@ gulp.task('add-jxcore-cordova', ['unpack-jxcore-cordova'], function (callback) {
     }
 });
 
-gulp.task('add-platforms', ['add-jxcore-cordova'], function (callback) {
+gulp.task('remove-platforms', ['unpack-jxcore-cordova'], function (callback) {
+    if (fs.existsSync('cordova/platforms/android')) {
+        require('child_process').exec('cordova platforms remove android', {
+            cwd: 'cordova'
+        }, callback);
+    } else {
+        callback();
+    }
+});
+
+gulp.task('add-platforms', ['add-jxcore-cordova', 'remove-platforms'], function (callback) {
     if (fs.existsSync('cordova/platforms/android')) {
         callback();
     } else {
@@ -71,12 +82,20 @@ gulp.task('install-server-packages', function () {
     }));
 });
 
+gulp.task('clean-server-packages', ['install-server-packages'], function () {
+    return del([
+        'www/jxcore/node_modules/**/*.pem'
+    ]);
+});
+
+
 gulp.task('change-config-xml', ['cordova-create'], function (done) {
     var configPath = 'cordova/config.xml';
     fs.readFile(configPath, 'utf8', function (err, content) {
         if (err) {
             done(err);
         } else {
+            // <icon src="www/jxcore/public/img/icon.png" density="ldpi" />
             content = content.replace('src="index.html"', 'src="jxcore/public/index.html"');
             fs.writeFile(configPath, content, done);
         }
@@ -84,7 +103,7 @@ gulp.task('change-config-xml', ['cordova-create'], function (done) {
 });
 
 
-gulp.task('move-server-to-www', ['install-server-packages', 'clean-www', 'change-config-xml'], function () {
+gulp.task('move-server-to-www', ['clean-server-packages', 'clean-www', 'change-config-xml'], function () {
     return gulp
         .src('www/**/*', {
             base: 'www'
