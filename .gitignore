@@ -1,5 +1,13 @@
 node_modules/
-cordova/
-www/jxcore/node_modules
-.db
+
+www/jxcore/node_modules/
+
+**/*.db
+
 build.keystore
+
+io.jxcore.node/
+io.jxcore.node.jx
+
+platforms/
+plugins/

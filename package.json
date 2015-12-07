@@ -1,7 +1,7 @@
 {
     "name": "jxcore-repl",
     "description": "repl server running on phone",
-    "version": "0.0.1",
+    "version": "0.0.3",
     "author": "Kakhaber Bazerashvili",
     "devDependencies": {
         "del": "2.1.0",

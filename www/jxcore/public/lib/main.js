@@ -2,7 +2,10 @@
     if (typeof jxcore === 'undefined') {
         setTimeout(check, 5);
     } else if (jxcore === 'none' || cordova === 'none') {
-        init(location.protocol + '//' + location.host + '/');
+        var host = location.protocol + '//' + location.host;
+        connect(host, function () {
+            start(host);
+        });
     } else {
         jxcore.isReady(function () {
             jxcore('alert').register(alert);
@@ -10,30 +13,16 @@
                 if (err) {
                     alert(err);
                 } else {
-                    var host = jxcore('getLocalIP').call(function (host) {
-                        init(host);
+                    jxcore('getServerInfo').call(function (server) {
+                        connect(server.protocol + '//127.0.0.1:' + server.port, function () {
+                            start(server.ip ? (server.protocol + '//' + server.ip + ':' + server.port) : null);
+                        });
                     });
-                    
                 }
             });
         });
     }
 })();
-
-function init(host) {
-    var s = document.createElement('script');
-    s.async = false;
-    s.src = host + 'socket.io/socket.io.js';
-    document.body.appendChild(s);
-
-    (function _check() {
-        if (window.io) {
-            start(host);
-        } else {
-            setTimeout(_check, 5);
-        }
-    })();
-}
 
 var socket,
     bash = new Bash(document.getElementById('bash'));
@@ -46,9 +35,29 @@ bash.on('stdin', function (command) {
     }
 });
 
+function connect(host, callback) {
+    var s = document.createElement('script');
+    s.async = false;
+    s.src = host + '/socket.io/socket.io.js';
+    document.body.appendChild(s);
+
+    (function _check() {
+        if (window.io) {
+            socket = io.connect(host);
+            callback();
+        } else {
+            setTimeout(_check, 5);
+        }
+    })();
+}
+
 function start(host) {
-    socket = io.connect(host);
-    bash.write('> host: ' + host + '\n');
+    if (host) {
+        bash.write('Connected! host: ' + host + '\n');
+    } else {
+        bash.write('Enable wifi or mobile internet to connect from browser\n');
+    }
+
     bash.write('> ');
 
     socket.on('stdout', function (text) {

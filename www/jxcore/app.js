@@ -39,15 +39,10 @@ io.on('connection', function (socket) {
 });
 
 if (isMobile) {
-    try {
-        Mobile('getLocalIP').registerSync(getLocalIP);
-    }
-    catch(ex) {
-        Mobile('alert').call(ex.message ? ex.message : ex);
-    }
+    Mobile('getServerInfo').registerSync(getServerInfo);
 }
 
-function getLocalIP() {
+function getServerInfo() {
     var os = require('os');
     var net = os.networkInterfaces();
     var ips = [];
@@ -88,5 +83,9 @@ function getLocalIP() {
         }
     }
 
-    return 'http://' + ips[0] + ':' + port + '/';
+    return {
+        protocol: 'http:',
+        ip: ips[0],
+        port: port
+    }
 }
