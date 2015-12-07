@@ -56,5 +56,5 @@ gulp.task('generate-keystore', function () {
 });
 
 gulp.task('build-release', ['build'], function () {
-    return gulp.src('').pipe(shell('"cordova/platforms/android/cordova/build" --release --buildConfig build.json'));
+    return gulp.src('').pipe(shell('"platforms/android/cordova/build" --release --buildConfig build.json'));
 });
