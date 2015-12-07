@@ -23,5 +23,5 @@ This includes creating cordova app, downloading and adding io.jxcore.cordova plu
 ### Run on android
 
 ```bash
-gulp run
+gulp run-android
 ```
