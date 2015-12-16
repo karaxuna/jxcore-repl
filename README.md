@@ -25,3 +25,10 @@ This includes creating cordova app, downloading and adding io.jxcore.cordova plu
 ```bash
 gulp run-android
 ```
+
+### Run as hosted app, reachable from browser:
+
+```bash
+gulp build
+jx www/jxcore/app
+```
